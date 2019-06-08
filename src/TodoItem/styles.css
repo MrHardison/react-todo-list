@@ -1,0 +1,33 @@
+.todo-item {
+  align-items: center;
+  border: 1px solid #000;
+  display: flex;
+  margin-bottom: 1rem;
+  padding: 0.5rem;
+  justify-content: space-between;
+}
+.todo-text.done {
+  text-decoration: line-through;
+}
+.item-wrapper {
+  align-content: center;
+  display: flex;
+  justify-content: space-between;
+}
+.todo-checkbox {
+  margin-right: 1rem;
+}
+.todo-delete {
+  align-items: center;
+  background: red;
+  border: none;
+  border-radius: 50%;
+  cursor: pointer;
+  color: #fff;
+  display: flex;
+  height: 20px;
+  outline: none;
+  padding: 0;
+  justify-content: center;
+  width: 20px;
+}
