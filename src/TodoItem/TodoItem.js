@@ -4,12 +4,12 @@ import './styles.css'
 import Context from '../Context'
 
 function TodoItem({ todo, index, onChange }) {
-  const classes = []
+  let completed = ''
 
   const { removeTodo } = useContext(Context)
 
   if (todo.completed) {
-    classes.push('done')
+    completed = 'done'
   }
   return (
     <li className='todo-item'>
@@ -21,7 +21,7 @@ function TodoItem({ todo, index, onChange }) {
           value={todo.completed}
           onChange={() => onChange(todo.id)}
         />
-        <div className={`todo-text ${classes.join(' ')}`}>
+        <div className={`todo-text ${completed}`}>
           <strong>{index + 1} </strong>
           {todo.title}
         </div>
