@@ -1,24 +1,23 @@
-import React from 'react';
-import './main.css';
-import TodoList from './TodoList/TodoList.js';
-import AddTodo from './AddTodo/AddTodo.js';
+import React, { useEffect } from 'react'
+import './main.css'
+import TodoList from './TodoList/TodoList.js'
+import AddTodo from './AddTodo/AddTodo.js'
 import Context from './Context'
 
-
 function App() {
-  const [list, setList] = React.useState(
-    [
-      {id: 1, text: 'todo item 1', complete: false},
-      {id: 2, text: 'todo item 2', complete: false},
-      {id: 3, text: 'todo item 3', complete: false}
-    ]
-  )
+  const [list, setList] = React.useState([])
+
+  useEffect(() => {
+    fetch('https://jsonplaceholder.typicode.com/todos?_limit=7')
+      .then(response => response.json())
+      .then(list => setList(list))
+  })
 
   function toggleItem(id) {
     setList(
       list.map(item => {
         if (id === item.id) {
-          item.complete = !item.complete
+          item.completed = !item.completed
         }
         return item
       })
@@ -26,35 +25,33 @@ function App() {
   }
 
   function removeTodo(id) {
-    setList(
-      list.filter(item => item.id !== id)
-    )
+    setList(list.filter(item => item.id !== id))
   }
-  function addItem(text) {
+  function addItem(title) {
     setList(
-      list.concat([{
-        id: 777,
-        text,
-        complete: false
-      }])
+      list.concat([
+        {
+          id: Date.now(),
+          title,
+          completed: false
+        }
+      ])
     )
   }
 
   return (
     <Context.Provider value={{ removeTodo }}>
-      <div className="wrapper">
+      <div className='wrapper'>
         <h1>My first React app</h1>
-        <AddTodo onCreate={ addItem } />
-        {
-          list.length ?
-          <TodoList
-            list={list}
-            onChange={toggleItem} /> :
+        <AddTodo onCreate={addItem} />
+        {list.length ? (
+          <TodoList list={list} onChange={toggleItem} />
+        ) : (
           <div>No Items!</div>
-        }
+        )}
       </div>
     </Context.Provider>
   )
 }
 
-export default App;
+export default App
