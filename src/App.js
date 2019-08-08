@@ -1,60 +1,48 @@
-import React from 'react';
-import './main.css';
-import TodoList from './TodoList/TodoList.js';
-import AddTodo from './AddTodo/AddTodo.js';
-import Context from './Context'
-
+import React, { useState } from 'react'
+import TodoList from './Todo/TodoList'
+import AddTodo from './Todo/AddTodo'
+import Context from './context'
 
 function App() {
-  const [list, setList] = React.useState(
-    [
-      {id: 1, text: 'todo item 1', complete: false},
-      {id: 2, text: 'todo item 2', complete: false},
-      {id: 3, text: 'todo item 3', complete: false}
-    ]
-  )
+  const [todos, setTodos] = React.useState([
+    { id: 1, completed: false, title: 'Пожрать' },
+    { id: 2, completed: false, title: 'Поспать' },
+    { id: 3, completed: false, title: 'Погулять' },
+    { id: 4, completed: false, title: 'Поработать' }
+  ])
 
-  function toggleItem(id) {
-    setList(
-      list.map(item => {
-        if (id === item.id) {
-          item.complete = !item.complete
+  function toggleTodo(id) {
+    setTodos(
+      todos.map(todo => {
+        if (todo.id === id) {
+          todo.completed = !todo.completed
         }
-        return item
+        return todo
       })
     )
   }
 
   function removeTodo(id) {
-    setList(
-      list.filter(item => item.id !== id)
-    )
+    setTodos(todos.filter(todo => todo.id !== id))
   }
-  function addItem(text) {
-    setList(
-      list.concat([{
-        id: 777,
-        text,
-        complete: false
-      }])
-    )
+
+  function addTodo(title) {
+    setTodos([...todos, { id: Date.now(), completed: false, title }])
   }
 
   return (
     <Context.Provider value={{ removeTodo }}>
       <div className="wrapper">
-        <h1>My first React app</h1>
-        <AddTodo onCreate={ addItem } />
-        {
-          list.length ?
-          <TodoList
-            list={list}
-            onChange={toggleItem} /> :
-          <div>No Items!</div>
-        }
+        <h1>React tutorial</h1>
+        <AddTodo onCreate={addTodo} />
+        {todos.length ? (
+          <TodoList todos={todos} onToggle={toggleTodo} />
+        ) : (
+          <p>There is no todos!</p>
+        )}
       </div>
     </Context.Provider>
   )
 }
 
-export default App;
+export default App
