@@ -18,7 +18,7 @@ function TodoList({ todos, onToggle }) {
           todo={todo}
           key={todo.id}
           index={index + 1}
-          onChange={onToggle}
+          onChange={() => onToggle(todo.id)}
         />
       ))}
     </ul>

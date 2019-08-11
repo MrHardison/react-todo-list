@@ -1,9 +1,14 @@
 import React, { useState, useEffect } from 'react'
+import { bindActionCreators } from 'redux'
+import { connect } from 'react-redux'
+import { addTodo, removeTodo } from './Actions/todoActions'
 import TodoList from './Todo/TodoList'
-import Context from './context'
+import Context from './Context'
 import Loader from './Loader'
 
 const AddTodo = React.lazy(() => import('./Todo/AddTodo'))
+
+// Ducks, api, url, handbook duck
 
 function App() {
   const [todos, setTodos] = useState([])
@@ -19,25 +24,37 @@ function App() {
         }, 1000)
       })
   }, [])
-
   function toggleTodo(id) {
     setTodos(
-      todos.map(todo => {
-        if (todo.id === id) {
-          todo.completed = !todo.completed
-        }
-        return todo
-      })
+      todos.map(({ completed, ...rest }) => ({
+        ...rest,
+        completed: id === rest.id ? !completed : completed
+      }))
     )
   }
 
-  function removeTodo(id) {
-    setTodos(todos.filter(todo => todo.id !== id))
+  // function removeTodo(id) {
+  //   setTodos(todos.filter(todo => todo.id !== id))
+  // }
+
+  // function addTodo(title) {
+  //   setTodos([...todos, { id: Date.now(), completed: false, title }])
+  // }
+
+  function MatchDispatchToProps(dispatch) {
+    return bindActionCreators(
+      {
+        add: addTodo,
+        delete: removeTodo
+      },
+      dispatch
+    )
   }
 
-  function addTodo(title) {
-    setTodos([...todos, { id: Date.now(), completed: false, title }])
-  }
+  connect(
+    null,
+    MatchDispatchToProps
+  )(addTodo)
 
   return (
     <Context.Provider value={{ removeTodo }}>

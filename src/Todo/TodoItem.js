@@ -1,6 +1,7 @@
+// @flow
 import React, { useContext } from 'react'
 import PropTypes from 'prop-types'
-import Context from '../context'
+import Context from '../Context'
 
 const styles = {
   li: {
@@ -29,7 +30,7 @@ function TodoItem({ todo, index, onChange }) {
           type="checkbox"
           checked={todo.completed}
           style={styles.input}
-          onChange={() => onChange(todo.id)}
+          onChange={onChange}
         />
         <strong>{index}</strong>&nbsp;
         {todo.title}
